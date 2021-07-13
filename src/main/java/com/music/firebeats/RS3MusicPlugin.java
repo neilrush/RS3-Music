@@ -93,7 +93,7 @@ public class RS3MusicPlugin extends Plugin
 	 */
 	private static final int LOOP_MUSIC_CONTROL_VARBIT = 4147;
 	/**
-	 *The maximum value that the client music volume can be set to. 
+	 *The maximum value that the client music volume can be set to.
 	 */
 	private static final double CLIENT_MAX_VOLUME = 255;
 	/**
@@ -532,6 +532,35 @@ public class RS3MusicPlugin extends Plugin
 	{
 		return currentTrackBox;
 	}
+
+	private String getTrackLink(String anonFilesLink)
+	{
+		String link = "";
+
+		try
+		{
+			// Only if in whitelist
+			if (true)
+			{
+				Document doc = Jsoup.connect(anonFilesLink).get();
+
+				Element downloadUrl = doc.selectFirst(".wikitable.mw-filepage-transcodestatus a");
+
+				link = downloadUrl.attr("href");
+
+				link = link.replace(" ", "%20");
+
+				// log.info("Link: " + link);
+			}
+		}
+		catch (Exception e)
+		{
+			// log.error(e.getMessage()); TODO: Still log but prevent spamming the file
+		}
+
+		return link;
+	}
+
 
 }
 
