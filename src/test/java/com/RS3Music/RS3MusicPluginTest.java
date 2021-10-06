@@ -1,9 +1,9 @@
-package com.music.firebeats;
+package com.RS3Music;
 
 import net.runelite.client.RuneLite;
 import net.runelite.client.externalplugins.ExternalPluginManager;
 
-public class FireBeatsPluginTest
+public class RS3MusicPluginTest
 {
 	public static void main(String[] args) throws Exception
 	{

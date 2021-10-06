@@ -1,16 +1,16 @@
-package com.music.firebeats;
+package com.RS3Music;
 
 import com.google.common.collect.ImmutableMap;
 
 /**
- * Provides access to the music tracks map see {@link #trackList} 
+ * Provides access to the music tracks map see {@link #trackList}
  */
 public class MusicTracks
 {
-    /**
-     * Map of all the tracks that are shared between osrs and rs3
-     * {@link https://runescape.wiki/w/Music/track_list}
-     */
+	/**
+	 * Map of all the tracks that are shared between osrs and rs3
+	 * {@link https://runescape.wiki/w/Music/track_list}
+	 */
 	private static final ImmutableMap<String, String> trackList = new ImmutableMap
 		.Builder<String, String>()
 		.put("7th Realm", "https://runescape.wiki/index.php?title=File%3A7th_Realm.ogg")//✅
@@ -222,7 +222,7 @@ public class MusicTracks
 		.put("Stagnant", "https://runescape.wiki/index.php?title=File%3AStagnant.ogg")//✅
 		.put("Start", "https://runescape.wiki/index.php?title=File%3AWhile_We_Sleep.ogg")//✅
 		.put("Stillness", "https://runescape.wiki/index.php?title=File%3AStillness.ogg")//✅
-		.put("Still Night","https://runescape.wiki/index.php?title=File%3ABusy_Night.ogg")//✅
+		.put("Still Night", "https://runescape.wiki/index.php?title=File%3ABusy_Night.ogg")//✅
 		.put("Storm Brew", "https://runescape.wiki/index.php?title=File%3AStorm_Brew.ogg")//✅
 		.put("Stranded", "https://runescape.wiki/index.php?title=File%3AStranded.ogg")//✅
 		.put("Strength of Saradomin", "https://runescape.wiki/index.php?title=File%3AStrength_of_Saradomin.ogg")//✅
@@ -284,25 +284,27 @@ public class MusicTracks
 		.put("Zamorak Zoo", "https://runescape.wiki/index.php?title=File%3AZamorak_Zoo.ogg")//✅
 		.build();
 
-    /**
-     * Checks {@link #trackList} for the specified track.
-     * @param name the name of the track to lookup
-     * @return true if the track exists, false otherwise
-     */
-	public static Boolean ContainsTrack(String name)
+	/**
+	 * Checks {@link #trackList} for the specified track.
+	 *
+	 * @param name the name of the track to lookup
+	 * @return true if the track exists, false otherwise
+	 */
+	public static Boolean containsTrack(String name)
 	{
 		return trackList.containsKey(name);
 	}
 
-    /**
-     * Gets the {@code link} for the specified track.
-     * <p>
-     * Note: the link is not a direct download of the track.
-     * it is only a link to the file page containing the download
-     * @param name the track name used to get the link from {@link #trackList}
-     * @return the string of the tracks link, otherwise null if the track does not exist in {@link #trackList}
-     */
-	public static String GetTrackLink(String name)
+	/**
+	 * Gets the {@code link} for the specified track.
+	 * <p>
+	 * Note: the link is not a direct download of the track.
+	 * it is only a link to the file page containing the download
+	 *
+	 * @param name the track name used to get the link from {@link #trackList}
+	 * @return the string of the tracks link, otherwise null if the track does not exist in {@link #trackList}
+	 */
+	public static String getTrackLink(String name)
 	{
 		return trackList.get(name);
 	}
