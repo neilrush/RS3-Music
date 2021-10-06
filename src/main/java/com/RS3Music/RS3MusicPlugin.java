@@ -27,7 +27,6 @@ package com.RS3Music;
 
 import jaco.mp3.player.MP3Player;
 import java.awt.Color;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collection;
@@ -68,6 +67,12 @@ import org.jsoup.nodes.Element;
 public class RS3MusicPlugin extends Plugin
 {
 	/**
+	 * The id of the currently playing track in the music widget
+	 * <p>
+	 * !may change if jagex update the music player
+	 */
+	public static final int CURRENTLY_PLAYING_WIDGET_ID = 6;
+	/**
 	 * The decimal value of the green color used by unlocked music tracks
 	 */
 	private static final int RUNESCAPE_GREEN = 901389;
@@ -75,12 +80,6 @@ public class RS3MusicPlugin extends Plugin
 	 * The Integer that represents the music tab number
 	 */
 	private static final int MUSIC_TAB_VAR_CLIENT_INT = 13;
-	/**
-	 * The id of the currently playing track in the music widget
-	 * <p>
-	 * !may change if jagex update the music player
-	 */
-	public static final int CURRENTLY_PLAYING_WIDGET_ID = 6;
 	/**
 	 * The maximum value that the client music volume can be set to.
 	 */
@@ -111,10 +110,11 @@ public class RS3MusicPlugin extends Plugin
 	/**
 	 * Used to fade the currently playing track
 	 */
-	private Double fader = 1.00;
+	private final Double fader = 1.00;
 
 	/**
 	 * Checks the client vars to see if the user is on the music tab
+	 *
 	 * @return true if the user is on the music tab else false
 	 */
 	private boolean isOnMusicTab()
@@ -156,19 +156,20 @@ public class RS3MusicPlugin extends Plugin
 
 	/**
 	 * Plays the given track from the tracklist.
+	 *
 	 * @param track The track name of the track to play
 	 * @throws IllegalArgumentException Invalid link or invalid track name
 	 */
 	private void playTrack(String track) throws IllegalArgumentException
 	{
 		trackPlayer.getPlayList().clear();
-		if(MusicTracks.containsTrack(track))
+		if (MusicTracks.containsTrack(track))
 		{
-			try 
+			try
 			{
 				// Get actual track link
 				String directLink = getTrackLink(MusicTracks.getTrackLink(track));
-				if(!directLink.equals(""))
+				if (!directLink.equals(""))
 				{
 					System.setProperty("http.agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36");
 					trackPlayer.addToPlayList(new URL(directLink));
@@ -178,11 +179,11 @@ public class RS3MusicPlugin extends Plugin
 					currentlyPlayingTrackAudioPlayer = track;
 					log.debug("Played Track: " + track);
 				}
-			} 
+			}
 			catch (Exception e)
 			{
 				currentlyPlayingTrackAudioPlayer = "";
-				throw new IllegalArgumentException("The track to play does not have a valid link: "+ track);
+				throw new IllegalArgumentException("The track to play does not have a valid link: " + track);
 			}
 		}
 		else
@@ -238,6 +239,7 @@ public class RS3MusicPlugin extends Plugin
 
 	/**
 	 * Finds the music plugin from the pluginmanager list
+	 *
 	 * @return The music plugin or null if not found
 	 */
 	private Plugin getMusicPlugin()
@@ -271,7 +273,7 @@ public class RS3MusicPlugin extends Plugin
 	@Subscribe
 	public void onClientTick(ClientTick clientTick)
 	{
-		if(trackPlayer.isPlaying())
+		if (trackPlayer.isPlaying())
 		{
 			clientThread.invokeLater(() -> client.setMusicVolume(0));
 			trackPlayer.setVolume(getVolume()); //mute client music
@@ -282,11 +284,12 @@ public class RS3MusicPlugin extends Plugin
 		}
 
 		tagReplaceableTracks();
-		if(currentlyPlayingTrackClient != null && (!currentlyPlayingTrackAudioPlayer.equals(currentlyPlayingTrackClient) || !trackPlayer.isPlaying()))
+		if (currentlyPlayingTrackClient != null && (!currentlyPlayingTrackAudioPlayer.equals(currentlyPlayingTrackClient) || !trackPlayer.isPlaying()))
 		{
-			if(MusicTracks.containsTrack(currentlyPlayingTrackClient))
+			if (MusicTracks.containsTrack(currentlyPlayingTrackClient))
 			{
-				handlePlayThread = new Thread(() -> {
+				handlePlayThread = new Thread(() ->
+				{
 					playTrack(currentlyPlayingTrackClient);
 				});
 
@@ -302,10 +305,10 @@ public class RS3MusicPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
-		if(client.getGameState() == GameState.LOGGED_IN)
+		if (client.getGameState() == GameState.LOGGED_IN)
 		{
 			Widget currentTrack = client.getWidget(WidgetID.MUSIC_GROUP_ID, CURRENTLY_PLAYING_WIDGET_ID);
-			if(currentTrack != null)
+			if (currentTrack != null)
 			{
 				currentlyPlayingTrackClient = currentTrack.getText();
 			}
@@ -318,6 +321,7 @@ public class RS3MusicPlugin extends Plugin
 
 	/**
 	 * Webscraper for the rs wiki files page that gets the mp3 link from the download button
+	 *
 	 * @param trackLink the link to the rs wiki file page
 	 * @return The direct link to the mp3 or {@code ""} if unable to get the link
 	 */
